@@ -1,20 +1,21 @@
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import { Container, Header, Link } from "./SharedLayout.styled";
+import { Container } from "@mui/material";
 import Loader from '../Loader';
+import AppBar from '../AppBar';
+import SideBar from '../SideBar'
+
 const Layout = () => {
   return (
+    <>
+    <AppBar />
     <Container>
-      <Header>
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/movies">Movies</Link>
-      </nav>
-      </Header>
+    <SideBar />
       <Suspense fallback={<Loader />}>
         <Outlet />
       </Suspense>
     </Container>
+    </>
   );
 };
 
