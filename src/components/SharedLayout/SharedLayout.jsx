@@ -9,7 +9,7 @@ const Layout = () => {
   return (
     <>
     <AppBar />
-    <Container>
+    <Container sx={{display: 'flex'}}>
     <SideBar />
       <Suspense fallback={<Loader />}>
         <Outlet />

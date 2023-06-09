@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
+  { field: 'id', headerName: 'ID', width: 100 },
   {
     field: 'firstName',
     headerName: 'First name',
@@ -46,9 +46,16 @@ const rows = [
   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
 ];
 
-export default function DataGridDemo() {
+export default function DataTable() {
+  const actionColumn = [{
+    field: 'action', headerName: 'Action', width: 100, renderCell:()=>{
+      return(
+        <></>
+      )
+    }
+  }];
   return (
-    <Box flex={2} sx={{ height: 400, width: '80%'}}>
+    <Box p={2} pt={4} sx={{flexShrink: 1, height: '100%'}}>
       <DataGrid
         rows={rows}
         columns={columns}
