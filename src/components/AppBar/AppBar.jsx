@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Avatar from '@mui/material/Avatar';
 import { Button } from '@mui/material';
+import { Link as LinkTo} from 'react-router-dom';
 
 const styles = {
   flex: {
@@ -26,7 +27,7 @@ const Navbar = () => {
             <Typography variant='title' color='inherit' sx={styles.flex}>
               CONTACTS
             </Typography>
-            <Button color="inherit">Login</Button>
+            <LinkTo to="/login"><Button color="inherit">Login</Button></LinkTo>
             <Avatar
               sx={{ width: 40, height: 40 }}
               alt='user profile'
