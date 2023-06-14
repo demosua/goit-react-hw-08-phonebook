@@ -1,31 +1,38 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const authSlice = createSlice({
-  name: 'auth',
-  initialState: {
-    user: { name: null, email: null },
-    token: null,
-    isLoggedIn: false,
-    isRefreshing: false,
+export const authorizationApi = createApi({
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://connections-api.herokuapp.com' }),
+    prepareHeaders: (headers, { getState }) => {
+    const token = getState().auth.token
+    // If we have a token set in state, let's assume that we should be passing it.
+    if (token) {
+      headers.set('authorization', `Bearer ${token}`)
+    }
+    return headers
   },
-  reducers: {
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1
-    },
-    decrement: (state) => {
-      state.value -= 1
-    },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload
-    },
-  },
-})
+  tagTypes: ['Auth'],
+  endpoints: (builder) => ({
+    getCurrentUser: builder.query({
+      query: () => '/users/current',
+      providesTags: ['Auth'],
+    }),
+    signup: builder.mutation({
+      query: (credentials) => ({
+        url: '/users/signup',
+        method: 'POST',
+        body: credentials,
+      }),
+      invalidatesTags: ['Auth'],
+    }),
+    login: builder.mutation({
+      query: (credentials) => ({
+        url: '/users/login',
+        method: 'POST',
+        body: credentials,
+      }),
+      invalidatesTags: ['Auth'],
+    }),
+  }),
+});
 
-// Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
-
-export default authSlice.reducer
+export const { useSignupMutation, useLoginMutation, useGetCurrentUserQuery } = authorizationApi;

@@ -13,6 +13,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as LinkTo } from 'react-router-dom';
+import { useSignupMutation } from 'redux/auth/authSlice';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Copyright(props) {
   return (
@@ -28,17 +31,34 @@ function Copyright(props) {
 }
 
 // TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const [signup] = useSignupMutation();
+
+  const handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const fullname = `${data.get('firstName')} ${data.get('lastName')}`;
     console.log({
+      name: fullname,
       email: data.get('email'),
       password: data.get('password'),
     });
+
+    const credentials = {
+      name: fullname,
+      email: data.get('email'),
+      password: data.get('password'),
+    }
+
+    try {
+      await signup(credentials);
+      toast.success('Contact was added to your phonebook');
+    } catch (error) {
+      toast.error('Oops.. Please, try again');
+    }
+
   };
 
   return (
@@ -128,6 +148,18 @@ export default function SignUp() {
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
+              <ToastContainer
+                position="top-center"
+                autoClose={1000}
+                hideProgressBar={true}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+              />   
       </Container>
     </ThemeProvider>
   );

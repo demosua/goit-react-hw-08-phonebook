@@ -21,9 +21,6 @@ const Navbar = () => {
       <Box sx={styles.flex}>
         <AppBar position='sticky' disablegutters='true'>
           <Toolbar>
-            <IconButton color='inherit' aria-label='Menu'>
-              <MenuIcon />
-            </IconButton>
             <Typography variant='title' color='inherit' sx={styles.flex}>
               CONTACTS
             </Typography>
