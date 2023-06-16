@@ -3,8 +3,6 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import Avatar from '@mui/material/Avatar';
 import { Button } from '@mui/material';
 import { Link as LinkTo} from 'react-router-dom';
@@ -16,6 +14,7 @@ const styles = {
 };
 
 const Navbar = () => {
+
   return (
     <>
       <Box sx={styles.flex}>

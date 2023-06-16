@@ -1,45 +1,20 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createSlice } from '@reduxjs/toolkit';
 
-export const authorizationApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://connections-api.herokuapp.com' }),
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token;
-    // If we have a token set in state, let's assume that we should be passing it.
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`);
-    }
-      return headers;
+export const authSlice = createSlice({
+  name: 'auth',
+  initialState: {
+    user: { name: null, email: null },
+    token: null,
+    isLoggedIn: false,
+    isRefreshing: false,
   },
-  tagTypes: ['Auth'],
-  endpoints: (builder) => ({
-    getCurrentUser: builder.query({
-      url: '/users/current',
-      providesTags: ['Auth'],
-    }),
-    signup: builder.mutation({
-      query: (credentials) => ({
-        url: '/users/signup',
-        method: 'POST',
-        body: credentials,
-      }),
-      invalidatesTags: ['Auth'],
-    }),
-    login: builder.mutation({
-      query: (credentials) => ({
-        url: '/users/login',
-        method: 'POST',
-        body: credentials,
-      }),
-      invalidatesTags: ['Auth'],
-    }),
-    logout: builder.mutation({
-      query: () => ({
-        url: '/users/logout',
-        method: 'POST',
-      }),
-      invalidatesTags: ['Auth'],
-    }),
-  }),
+  reducers: {
+    login: (state, action) => {
+       return (state = action.payload)
+    },
+  },
 });
 
-export const { useSignupMutation, useLoginMutation, useLogoutMutation, useGetCurrentUserQuery } = authorizationApi;
+
+export const selectFilter = state => state.auth
+export default authSlice.reducer

@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 
 
 const App = () => {
-  const getCurrentUser = useSelector(state => state.filter);
+  const getCurrentUser = useSelector(state => state.auth?.token);
   console.log(getCurrentUser)
 
   return (
