@@ -4,6 +4,7 @@ import Home from 'pages/Home';
 import SharedLayout from '../SharedLayout'
 import Login from 'components/Login/Login';
 import Register from 'components/Register/Register';
+import { useSelector } from 'react-redux';
 
 
 // const SharedLayout = lazy(() => import("../SharedLayout"));
@@ -11,6 +12,9 @@ import Register from 'components/Register/Register';
 
 
 const App = () => {
+  const getCurrentUser = useSelector(state => state.filter);
+  console.log(getCurrentUser)
+
   return (
     <>
       <Routes>
