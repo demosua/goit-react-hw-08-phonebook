@@ -1,31 +1,37 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Home from 'pages/Home';
-import SharedLayout from '../SharedLayout'
-import Login from 'components/Login/Login';
-import Register from 'components/Register/Register';
 import { useSelector } from 'react-redux';
 
-
-// const SharedLayout = lazy(() => import("../SharedLayout"));
-// const Home = lazy(() => import("pages/Home"));
+// const Loader = lazy(() => import("../Loader"));
+const SharedLayout = lazy(() => import("../SharedLayout"));
+const HomePage = lazy(() => import("pages/HomePage"));
+const RegisterPage = lazy(() => import("pages/RegisterPage"));
+const LoginPage = lazy(() => import("pages/LoginPage"));
+// const ContactsPage = lazy(() => import("pages/ContactsPage"));
 
 
 const App = () => {
-  const getCurrentUser = useSelector(state => state.auth?.token);
-  console.log(getCurrentUser)
+
+  const { isLoggedIn } = useSelector(state => state.auth);
+  console.log(isLoggedIn);
+  // const { token } = useSelector(state => state.auth);
+  // useGetCurrentUserQuery(undefined, {
+  //   skip: !token,
+  // });
 
   return (
     <>
-      <Routes>
-          <Route path="/" element={<SharedLayout />}>
-            <Route index element={<Home />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/contacts" element={<Login />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Route>
-      </Routes>
+      <Suspense fallback={<div>...</div>}>
+        <Routes>
+            <Route path="/" element={<SharedLayout />}>
+              <Route index element={<HomePage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              {/* <Route path="/contacts" element={<ContactsPage />} /> */}
+              <Route path="*" element={<Navigate to="/" />} />
+            </Route>
+          </Routes>
+        </Suspense>
       </>
   );
 };

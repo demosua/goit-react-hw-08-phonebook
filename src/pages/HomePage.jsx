@@ -2,15 +2,15 @@
 // import Loader from '../components/Loader';
 // import { ToastContainer, toast } from 'react-toastify';
 //import 'react-toastify/dist/ReactToastify.css';
-import AppBar from '../components/AppBar'
+// import AppBar from '../components/AppBar'
 
-const Home = () => {;
+const HomePage = () => {;
 
   return (
     <>
-    <AppBar />
+     
     </>
   );
 };
 
-export default Home;
+export default HomePage;

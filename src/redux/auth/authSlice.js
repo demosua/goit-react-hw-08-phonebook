@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { api } from 'redux/backend/api';
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -8,13 +9,44 @@ export const authSlice = createSlice({
     isLoggedIn: false,
     isRefreshing: false,
   },
-  reducers: {
-    login: (state, action) => {
-       return (state = action.payload)
-    },
+  extraReducers: builder => {
+    builder
+      .addMatcher(
+        api.endpoints.signup.matchFulfilled,
+        (state, { payload }) => {
+          state.user.name = payload.user.name;
+          state.user.email = payload.user.email;
+          state.token = payload.token;
+          state.isLoggedIn = true;
+        }
+      )
+      .addMatcher(
+        api.endpoints.login.matchFulfilled,
+        (state, { payload }) => {
+          state.user.name = payload.user.name;
+          state.user.email = payload.user.email;
+          state.token = payload.token;
+          state.isLoggedIn = true;
+        }
+      )
+      .addMatcher(
+        api.endpoints.logout.matchFulfilled,
+        (state, { payload }) => {
+          state.user.name = '';
+          state.user.email = '';
+          state.token = '';
+          state.isLoggedIn = false;
+        }
+      )
+      .addMatcher(
+        api.endpoints.getCurrentUser.matchFulfilled,
+        (state, { payload }) => {
+          state.user.name = payload.name;
+          state.user.email = payload.email;
+          state.isLoggedIn = true;
+        }
+      );
   },
 });
 
-
-export const selectFilter = state => state.auth
-export default authSlice.reducer
+export default authSlice.reducer;
