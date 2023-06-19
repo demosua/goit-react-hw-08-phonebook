@@ -14,8 +14,6 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as LinkTo } from 'react-router-dom';
 import { useLoginMutation } from 'redux/backend/api';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 
 function Copyright(props) {
@@ -54,9 +52,7 @@ export default function SignIn() {
 
     try {
       await login(credentials);
-      toast.success('You was loged in application');
     } catch (error) {
-      toast.error('Oops.. Please, try again');
     }
   };
 
@@ -128,18 +124,6 @@ export default function SignIn() {
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
-              <ToastContainer
-                position="top-center"
-                autoClose={1000}
-                hideProgressBar={true}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-              />
       </Container>
     </ThemeProvider>
   );

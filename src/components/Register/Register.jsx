@@ -14,8 +14,6 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as LinkTo } from 'react-router-dom';
 import { useSignupMutation } from 'redux/backend/api';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 function Copyright(props) {
   return (
@@ -54,9 +52,7 @@ export default function SignUp() {
 
     try {
       await signup(credentials);
-      toast.success('Contact was added to your phonebook');
     } catch (error) {
-      toast.error('Oops.. Please, try again');
     }
 
   };
@@ -147,19 +143,7 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
-              <ToastContainer
-                position="top-center"
-                autoClose={1000}
-                hideProgressBar={true}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-              />   
+        <Copyright sx={{ mt: 5 }} />  
       </Container>
     </ThemeProvider>
   );
