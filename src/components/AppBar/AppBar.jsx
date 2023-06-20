@@ -56,7 +56,7 @@ const styles = {
   },
 };
 
-const Navbar = () => {
+const NavBar = () => {
   const { isLoggedIn } = useSelector(state => state.auth);
   return (
     <>
@@ -88,4 +88,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;

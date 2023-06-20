@@ -9,7 +9,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Users'],
+  tagTypes: ['Users', 'Contacts'],
   endpoints: (builder) => ({
     getCurrentUser: builder.query({
       query: () => ({
@@ -41,7 +41,7 @@ export const api = createApi({
       invalidatesTags: ['Users'],
     }),
   }),
-  // tagTypes: ['contacts'],
 });
 
-export const { useSignupMutation, useLoginMutation, useLogoutMutation, useGetCurrentUserQuery } = api;
+export const { useSignupMutation, useLoginMutation,
+useLogoutMutation, useGetCurrentUserQuery } = api;

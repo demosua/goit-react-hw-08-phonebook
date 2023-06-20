@@ -11,8 +11,7 @@ const SharedLayout = lazy(() => import("../SharedLayout"));
 const HomePage = lazy(() => import("pages/HomePage"));
 const RegisterPage = lazy(() => import("pages/RegisterPage"));
 const LoginPage = lazy(() => import("pages/LoginPage"));
-// const ContactsPage = lazy(() => import("pages/ContactsPage"));
-
+const ContactsPage = lazy(() => import("pages/ContactsPage"));
 
 const App = () => {
   const { token } = useAuth();
@@ -26,7 +25,7 @@ const App = () => {
               <Route index element={<PublicRoute restricted> <HomePage /> </PublicRoute>} />
               <Route path="/register" element={<PublicRoute restricted> <RegisterPage /> </PublicRoute>} />
               <Route path="/login" element={<PublicRoute restricted> <LoginPage /> </PublicRoute>} />
-              {/* <Route path="/contacts" element={<ContactsPage />} /> */}
+              <Route path="/contacts" element={<PrivateRoute> <ContactsPage/> </PrivateRoute>} />
               <Route path="*" element={<Navigate to="/" />} />
             </Route>
           </Routes>
