@@ -9,7 +9,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Users', 'Contacts'],
+  tagTypes: ['Users'],
   endpoints: (builder) => ({
     getCurrentUser: builder.query({
       query: () => ({

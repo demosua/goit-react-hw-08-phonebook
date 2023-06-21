@@ -16,17 +16,16 @@ const Contacts = () => {
 
   const { data, isFetching, error } = useGetContactsQuery();
   console.log(data);
-  return (
 
+  return (
+<>
     <Contact>
-      {isFetching
-        ? (<div>Loading...</div>)
-        : data.map(contact =>
+      {data.map(contact =>
         (<ContactItem key={contact.id} contact={contact} />)
       )}
       {error && <div>Error</div>}
     </Contact>
-
+</>
   )
 };
   

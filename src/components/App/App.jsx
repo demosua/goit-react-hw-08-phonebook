@@ -1,9 +1,10 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from '../hooks';
 import { useGetCurrentUserQuery } from 'redux/backend/api';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
+import { useSelector } from 'react-redux';
 
 
 // const Loader = lazy(() => import("../Loader"));
@@ -14,8 +15,10 @@ const LoginPage = lazy(() => import("pages/LoginPage"));
 const ContactsPage = lazy(() => import("pages/ContactsPage"));
 
 const App = () => {
-  const { token } = useAuth();
-  useGetCurrentUserQuery(null, { skip: !token });
+
+  console.log(useGetCurrentUserQuery());
+
+  // useGetCurrentUserQuery(null, { skip: !token });
 
   return (
     <>
