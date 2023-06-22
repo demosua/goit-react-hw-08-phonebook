@@ -7,13 +7,13 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useLogoutMutation } from 'redux/backend/api';
-import { useSelector } from 'react-redux';
+import { useAuth } from 'components/hooks';
 
 export default function SignUp() {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [logout] = useLogoutMutation();
-  const { name } = useSelector(state => state.auth.user)
+  const { user } = useAuth();
   
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -73,7 +73,7 @@ export default function SignUp() {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-        <MenuItem onClick={handleClose}>{name}</MenuItem>
+        <MenuItem onClick={handleClose}>{user.name}</MenuItem>
         <MenuItem onClick={() => {logout();}}>Logout</MenuItem>
         </Menu>
       </div>

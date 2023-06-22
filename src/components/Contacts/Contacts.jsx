@@ -1,9 +1,9 @@
-import ContactItem from "../ContactItem";
+// import ContactItem from "../ContactItem";
 import { Contact } from './Contacts.styled';
 // import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 // import { selectFilter } from 'redux/contacts/filterSlice';
-import { useGetContactsQuery } from "redux/contacts/contactsApi";
+// import { useGetContactsQuery } from "redux/contacts/contactsApi";
 
 const Contacts = () => {
   // const filter = useSelector(selectFilter)
@@ -14,16 +14,16 @@ const Contacts = () => {
   // if (!contacts) { return }
   // const visibleContacts = contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter))
 
-  const { data, isFetching, error } = useGetContactsQuery();
-  console.log(data);
+  // const { data, isFetching, error } = useGetContactsQuery();
+  // console.log(data);
 
   return (
 <>
     <Contact>
-      {data.map(contact =>
+      {/* {data.map(contact =>
         (<ContactItem key={contact.id} contact={contact} />)
       )}
-      {error && <div>Error</div>}
+      {error && <div>Error</div>} */}
     </Contact>
 </>
   )

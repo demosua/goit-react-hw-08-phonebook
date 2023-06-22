@@ -58,6 +58,7 @@ const styles = {
 
 const NavBar = () => {
   const { isLoggedIn } = useSelector(state => state.auth);
+  
   return (
     <>
       <Box sx={styles.flex}>
