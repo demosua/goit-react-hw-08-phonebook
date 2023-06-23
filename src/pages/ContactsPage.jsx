@@ -1,12 +1,27 @@
 // import ContactForm from 'components/ContactForm/ContactForm';
-// import Contacts  from '../components/Contacts';
+import ContactsTable  from '../components/ContactsTable';
+import { useSelector } from "react-redux";
+import { selectFilter } from 'redux/contacts/filterSlice'
+import { useGetContactsQuery } from "redux/backend/api";
 
 const ContactsPage = () => {
+  const {data: contacts, isSuccess, isError} = useGetContactsQuery();
+  const filter = useSelector(selectFilter)
+
+  if (!contacts) { return }
+
+  const normalizedFilter = filter.toLowerCase();
+  const visibleContacts = contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter))
+  console.log(visibleContacts);
 
   return (
     <>
-      {/* <ContactForm/>
-      <Contacts /> */}
+    {isSuccess && (
+    <div>
+      <ContactsTable />
+    </div>)
+    }
+    {isError && <div>Error</div>}
     </>
   );
 };

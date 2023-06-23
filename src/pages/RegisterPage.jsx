@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,8 +12,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as LinkTo } from 'react-router-dom';
+import { Link as LinkTo, useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from 'redux/backend/api';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Copyright(props) {
   return (
@@ -31,19 +33,19 @@ function Copyright(props) {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-const RegisterPage = () => {;
-  const [register] = useRegisterMutation();
+const RegisterPage = () => {
+  const [register, { isSuccess, isError }] = useRegisterMutation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    isError && toast.error('Invalid email or password');
+    isSuccess && navigate('/contacts');
+  }, [isSuccess, isError, navigate]);
 
   const handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const fullname = `${data.get('firstName')} ${data.get('lastName')}`;
-    
-    // console.log({
-    //   name: fullname,
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // });
 
     const credentials = {
       name: fullname,
@@ -52,14 +54,14 @@ const RegisterPage = () => {;
     }
 
     try {
-      await register(credentials);
+      await register(credentials)
     } catch (error) {
-
+      
     }
-
   };
 
   return (
+    <>
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -145,9 +147,10 @@ const RegisterPage = () => {;
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />  
+        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
+    </>
   );
 };
 

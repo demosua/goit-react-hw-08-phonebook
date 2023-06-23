@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useState} from 'react';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
@@ -9,12 +9,14 @@ import MenuItem from '@mui/material/MenuItem';
 import { useLogoutMutation } from 'redux/backend/api';
 import { useAuth } from 'components/hooks';
 
+
 export default function SignUp() {
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [logout] = useLogoutMutation();
   const { user } = useAuth();
-  
+
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -23,6 +25,10 @@ export default function SignUp() {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    setAnchorEl(null);
+    logout();
+  }
 
   return (
     <div>
@@ -74,7 +80,7 @@ export default function SignUp() {
           onClose={handleClose}
         >
         <MenuItem onClick={handleClose}>{user.name}</MenuItem>
-        <MenuItem onClick={() => {logout();}}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
       </div>
   )

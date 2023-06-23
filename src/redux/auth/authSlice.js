@@ -1,13 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { api } from 'redux/backend/api';
 
+const   initialState = {
+  user: { name: null, email: null },
+  token: null,
+  isLoggedIn: false,
+}
 export const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    user: { name: null, email: null },
-    token: null,
-    isLoggedIn: false,
-  },
+  initialState: initialState,
   extraReducers: builder => {
     builder
       .addMatcher(
@@ -31,10 +32,10 @@ export const authSlice = createSlice({
       .addMatcher(
         api.endpoints.logout.matchFulfilled,
         (state) => {
-          state.auth.user.name = '';
-          state.auth.user.email = '';
-          state.auth.token = '';
-          state.auth.isLoggedIn = false;
+          state.user.name = '';
+          state.user.email = '';
+          state.token = '';
+          state.isLoggedIn = false;
         }
       )
       .addMatcher(

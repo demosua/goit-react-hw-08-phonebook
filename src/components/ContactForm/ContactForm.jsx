@@ -68,19 +68,7 @@ const ContactForm = () => {
               {/* {isLoading
               ? <Button type="submit"><IoPersonAdd /></Button>
               : <Button type="submit"><IoPersonAddOutline /></Button>
-              } */}
-              <ToastContainer
-                position="top-center"
-                autoClose={1000}
-                hideProgressBar={true}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-              />         
+              } */}        
       </Form>
     </>
   )

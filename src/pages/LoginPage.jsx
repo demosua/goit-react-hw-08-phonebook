@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,9 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as LinkTo, Navigate } from 'react-router-dom';
+import { Link as LinkTo, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from 'redux/backend/api';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -34,12 +34,13 @@ const LoginPage = () => {
   }
   
   const defaultTheme = createTheme();
-
     const [login, { isSuccess, isError }] = useLoginMutation();
-  
-    React.useEffect(() => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      isSuccess && navigate('/contacts');
       isError && toast.error('Invalid email or password');
-    }, [isSuccess, isError]);
+    }, [isSuccess, isError, navigate]);
 
     const handleSubmit = async event => {
       event.preventDefault();
@@ -48,17 +49,15 @@ const LoginPage = () => {
         email: data.get('email'),
         password: data.get('password'),
       }
-  
-      try {
-        await login(credentials);
-      } catch (error) {
-      }
-  
+        try {
+          await login(credentials);
+        } catch (error) {
+          alert(error);
+        }
     };
   
     return (
       <>
-      {isSuccess && <Navigate to="/contacts" replace={true} />}
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -116,11 +115,9 @@ const LoginPage = () => {
                   </Link>
                 </Grid>
                 <Grid item>
-  
                   <LinkTo to="/register" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </LinkTo>
-                  
                 </Grid>
               </Grid>
             </Box>
@@ -128,18 +125,6 @@ const LoginPage = () => {
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
       </ThemeProvider>
-      <ToastContainer
-                position="top-center"
-                autoClose={1000}
-                hideProgressBar={true}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-              /> 
       </>
     );
 }  

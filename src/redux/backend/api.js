@@ -11,7 +11,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Users'],
+  tagTypes: ['Users', 'Contacts'],
   endpoints: (builder) => ({
     getCurrentUser: builder.query({
       query: () => ({
@@ -42,8 +42,36 @@ export const api = createApi({
       }),
       invalidatesTags: ['Users'],
     }),
+    getContacts: builder.query({
+      query: () => '/contacts',
+      providesTags: ['Contacts'],
+    }),
+    createContact: builder.mutation({
+      query: contactData => ({
+        url: '/contacts',
+        method: 'POST',
+        body: contactData,
+      }),
+      invalidatesTags: ['Contacts'],
+    }),
+    deleteContact: builder.mutation({
+      query: id => ({
+        url: `/contacts/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Contacts'],
+    }),
+    updateContact: builder.mutation({
+      query: id => ({
+        url: `/contacts/${id}`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: ['Contacts'],
+    }),
   }),
 });
 
 export const { useRegisterMutation, useLoginMutation,
-useLogoutMutation, useGetCurrentUserQuery } = api;
+useLogoutMutation, useGetCurrentUserQuery,
+useGetContactsQuery, useCreateContactMutation,
+useDeleteContactMutation, useUpdateContactMutation } = api;

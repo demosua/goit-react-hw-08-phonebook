@@ -4,9 +4,10 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 // import { useGetCurrentUserQuery } from 'redux/backend/api';
 import PrivateRoute from 'components/PrivateRoute';
 import PublicRoute from 'components/PublicRoute';
+import { ToastContainerStyled } from './App.styled';
+import { CssBaseline } from '@mui/material';
 
 
-// const Loader = lazy(() => import("../Loader"));
 const SharedLayout = lazy(() => import("../SharedLayout"));
 const HomePage = lazy(() => import("pages/HomePage"));
 const RegisterPage = lazy(() => import("pages/RegisterPage"));
@@ -15,14 +16,11 @@ const ContactsPage = lazy(() => import("pages/ContactsPage"));
 
 const App = () => {
 
-  //console.log(useGetCurrentUserQuery());
-  //const { isLoggedIn } = useAuth()
-  //useGetCurrentUserQuery(null, { skip: !isLoggedIn });
-  //const { isSuccess } = useGetCurrentUserQuery();
-
   return (
     <>
       <Suspense fallback={<div>...</div>}>
+      <CssBaseline />
+      <ToastContainerStyled />
         <Routes>
             <Route path="/" element={<PublicRoute><SharedLayout /></PublicRoute>}>
               <Route index element={<PublicRoute><HomePage /></PublicRoute>} />
@@ -33,7 +31,7 @@ const App = () => {
             </Route>
           </Routes>
         </Suspense>
-      </>
+    </>
   );
 };
 
