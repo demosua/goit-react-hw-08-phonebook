@@ -1,5 +1,5 @@
 // import ContactForm from 'components/ContactForm/ContactForm';
-import ContactsTable  from '../components/ContactsTable';
+import BasicTable  from '../components/ContactTable';
 import { useSelector } from "react-redux";
 import { selectFilter } from 'redux/contacts/filterSlice'
 import { useGetContactsQuery } from "redux/backend/api";
@@ -18,7 +18,7 @@ const ContactsPage = () => {
     <>
     {isSuccess && (
     <div>
-      <ContactsTable />
+          <BasicTable rows={ visibleContacts } />
     </div>)
     }
     {isError && <div>Error</div>}

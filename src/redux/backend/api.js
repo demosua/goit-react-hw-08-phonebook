@@ -47,10 +47,10 @@ export const api = createApi({
       providesTags: ['Contacts'],
     }),
     createContact: builder.mutation({
-      query: contactData => ({
+      query: ({ name, number }) => ({
         url: '/contacts',
         method: 'POST',
-        body: contactData,
+        body: { name, number },
       }),
       invalidatesTags: ['Contacts'],
     }),
@@ -62,9 +62,10 @@ export const api = createApi({
       invalidatesTags: ['Contacts'],
     }),
     updateContact: builder.mutation({
-      query: id => ({
-        url: `/contacts/${id}`,
+      query: ({ contactId, name, number }) => ({
+        url: `/contacts/${contactId}`,
         method: 'PATCH',
+        body: { name, number },
       }),
       invalidatesTags: ['Contacts'],
     }),
