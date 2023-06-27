@@ -50,15 +50,24 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialog({ onClose, credentials }) {
+export default function CustomizedDialog({ onClose, credentials, type }) {
 
   const { id, name, number } = credentials;
   const [openDialog, setOpenDialog] = React.useState(true);
   const [contactName, setContactName] = React.useState(name);
   const [contactNumber, setContactNumber] = React.useState(number);
-
   let title;
-  name.length > 1 ? title = "Edit contact" : title = "Add contact";
+
+      switch (type) {
+      case 'edit':
+          title = "Edit contact";
+        break;
+      case 'add':
+          title = "Add contact";
+        break;
+      default:
+        return;
+    }
 
   const handleChange = event => {
     const { name } = event.currentTarget;
@@ -76,7 +85,18 @@ export default function CustomizedDialog({ onClose, credentials }) {
 
   const handleSubmit = event => {
     event.preventDefault();
-    const formData = {name: contactName, number: contactNumber}
+    let formData;
+    switch (type) {
+      case 'edit':
+          formData = {id, name: contactName, number: contactNumber}
+        break;
+      case 'add':
+          formData = {name: contactName, number: contactNumber}
+        break;
+      default:
+        return;
+    }
+    
     onClose(formData);
     setOpenDialog(false);
   }
@@ -133,7 +153,7 @@ export default function CustomizedDialog({ onClose, credentials }) {
                     sx={{ mt: 3, mb: 2 }}
                     onClick={handleClose}
                   >
-                    Add/Edit contact
+                    Save
                   </Button>
                 </Box>
             </Container>
