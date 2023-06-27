@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -123,13 +123,7 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
-  const [openModal, setOpenModal] = React.useState(false);
-
-  const handleOpenModal = () => {
-    setOpenModal(true)
-  }
+function EnhancedTableToolbar({ numSelected, handleOpenModal }) {
 
   return (
     <Toolbar
@@ -152,9 +146,7 @@ function EnhancedTableToolbar(props) {
         </Typography>
         <Tooltip title="Add contact">
           <IconButton onClick={handleOpenModal}>
-          {/* <FilterListIcon  /> */}
-          <PersonAddIcon />
-          {openModal && <Dialog type="add"/>}
+            <PersonAddIcon />
           </IconButton>
         </Tooltip>
       
@@ -168,16 +160,24 @@ EnhancedTableToolbar.propTypes = {
 
 export default function EnhancedTable({rows}) {
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [orderBy, setOrderBy] = React.useState('name');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [deleteContact] = useDeleteContactMutation();
   // const [updateContact] = useUpdateContactMutation();
   // const [createContact] = useCreateContactMutation();
+  let title;
+  const [openAdd, setOpenAdd] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
   
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => {setOpenModal(true)}
+  const handleOpenAdd = () => {
+    setOpenAdd(true);
+  };
+
+  const handleOpenEdit = () => {
+    setOpenEdit(true);
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -204,6 +204,18 @@ export default function EnhancedTable({rows}) {
     }
   }
 
+  const handleAddClose = (formData) => {
+    // Handle the form data in the App component
+    setOpenAdd(false);
+    console.log(formData);
+  };
+
+  const handleEditClose = (formData) => {
+    // Handle the form data in the App component
+    setOpenEdit(false);
+    console.log(formData);
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -226,10 +238,15 @@ export default function EnhancedTable({rows}) {
     [order, orderBy, page, rowsPerPage, rows],
   );
 
+  let credentials = {id: '', name: '', number: ''}
+
   return (
+    <>
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} handleOpenModal={handleOpenAdd} />
+
+        {openAdd && <Dialog onClose={handleAddClose} credentials={credentials}/>}
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -247,7 +264,7 @@ export default function EnhancedTable({rows}) {
             <TableBody>
               {visibleRows.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
-
+                const credentials={id: row.id, name: row.name, number: row.number}
                 return (
                   <TableRow
                     hover
@@ -267,9 +284,9 @@ export default function EnhancedTable({rows}) {
                     <TableCell align="left">{row.number}</TableCell>
                     <TableCell align="left">
                         <Tooltip title="Edit contact">
-                          <IconButton onClick={handleOpenModal}>
+                          <IconButton onClick={handleOpenEdit}>
+                          {openEdit && <Dialog onClose={handleEditClose} credentials={credentials}/>}
                             <EditIcon />
-                            {openModal && <Dialog type="update" id={row.id}/>}
                           </IconButton>
                         </Tooltip>
                       <IconButton onClick={(event) => handleDeleteClick(event, row.id)}><DeleteIcon /></IconButton>
@@ -300,5 +317,6 @@ export default function EnhancedTable({rows}) {
         />
       </Paper>
     </Box>
+    </>
   );
 }

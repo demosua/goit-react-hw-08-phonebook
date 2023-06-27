@@ -11,7 +11,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useCreateContactMutation, useUpdateContactMutation } from 'redux/backend/api';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -51,75 +50,39 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialogs(props) {
-  const [open, setOpen] = React.useState(true);
-  const [update, setUpdate] = React.useState(true);
-  const [updateContact] = useUpdateContactMutation();
-  const [createContact] = useCreateContactMutation();
+export default function CustomizedDialog({ onClose, credentials }) {
+
+  const { id, name, number } = credentials;
+  const [openDialog, setOpenDialog] = React.useState(true);
+  const [contactName, setContactName] = React.useState(name);
+  const [contactNumber, setContactNumber] = React.useState(number);
 
   let title;
-  let contactId;
+  name.length > 1 ? title = "Edit contact" : title = "Add contact";
 
-  switch (props.type) {
-    case 'update':
-      setUpdate(true);
-      contactId = props.id;
-      title = "Edit contact";
-      break;
-    default:
-      title = "Add new contact";
-    break;
-  }
-  // const handleAddClick = async (event, contactId) => {
-  //   try {
-  //     await createContact({});
-  //     //TODO: popup window with confirmation deleting contact
-  //     console.log('Contact was deleted from your phonebook');
-  //   } catch (error) {
-  //     console.log('Oops.. Please, try again');
-  //   }
-  // }
+  const handleChange = event => {
+    const { name } = event.currentTarget;
+    switch (name) {
+      case 'name':
+        setContactName(event.currentTarget.value)
+        break;
+      case 'number':
+        setContactNumber(event.currentTarget.value)
+        break;
+      default:
+        return;
+    }
+  }; 
 
   const handleSubmit = event => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // const name = data.get('name')
-    // const number = data.get('number')
-    
-
-    // console.log(name + ' ' + number)
-
-    // switch (props.type) {
-    //   case 'update':
-    //     try {
-    //           await updateContact(contactId, name, number);
-    //           console.log('Contact in your phonebook has been updated');
-    //         } catch (error) {
-    //           console.log('Oops.. Please, try again');
-    //         }
-    //     break;
-    //   default:
-    //     // try {
-    //     //   await ();
-    //     //   //TODO: popup window to edit contact
-    //     // } catch (error) {
-    //     //   console.log('Oops.. Please, try again');
-    //     // }
-    //   break;
-    // }
-
-    // const data = new FormData(event.currentTarget);
-    //   const credentials = {
-    //     email: data.get('name'),
-    //     password: data.get('number'),
-    // }
-    
-
-    setOpen(false);
+    const formData = {name: contactName, number: contactNumber}
+    onClose(formData);
+    setOpenDialog(false);
   }
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenDialog(false);
   };
 
   const defaultTheme = createTheme();
@@ -129,7 +92,7 @@ export default function CustomizedDialogs(props) {
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        open={open}
+        open={openDialog}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
           {title}
@@ -145,8 +108,9 @@ export default function CustomizedDialogs(props) {
                     fullWidth
                     id="name"
                     label="Contact name"
-                    name="text"
-                    value = {update ? contactId : ''}
+                    name="name"
+                    value = {contactName}
+                    onChange={handleChange}
                     autoComplete="name"
                     autoFocus
                   />
@@ -155,6 +119,8 @@ export default function CustomizedDialogs(props) {
                     required
                     fullWidth
                     name="number"
+                    value = {contactNumber}
+                    onChange={handleChange}
                     label="Rhone number"
                     type="text"
                     id="number"
@@ -165,6 +131,7 @@ export default function CustomizedDialogs(props) {
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
+                    onClick={handleClose}
                   >
                     Add/Edit contact
                   </Button>
