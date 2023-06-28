@@ -12,7 +12,7 @@ const ContactsPage = () => {
 
   const normalizedFilter = filter.toLowerCase();
   const visibleContacts = contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter))
-  console.log(visibleContacts);
+  // console.log(visibleContacts);
 
   return (
     <>

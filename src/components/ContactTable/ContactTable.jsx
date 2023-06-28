@@ -174,6 +174,8 @@ export default function EnhancedTable({rows}) {
   const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   
+
+
   const handleOpenAdd = () => {
     setOpenAdd(true);
   };
@@ -193,7 +195,7 @@ export default function EnhancedTable({rows}) {
     setSelected([]);
   };
 
-  const handleEditClick = (event, contactId, contactName, contactNumber) => {
+  const handleEditClick = (contactId, contactName, contactNumber) => {
     // setCredentials({id: contactId, name: contactName, number: contactNumber})
     setCredentials({id: contactId, name: contactName, number: contactNumber})
 
@@ -215,25 +217,24 @@ export default function EnhancedTable({rows}) {
   }
 
   const handleAddClose = async formData => {
-    try {
-      await createContact(formData);
-      console.log('Contact was created in your phonebook');
-    } catch (error) {
-      console.log('Oops.. Please, try again');
-    }
+    // try {
+    //   await createContact(formData);
+    //   console.log('Contact was created in your phonebook');
+    // } catch (error) {
+    //   console.log('Oops.. Please, try again');
+    // }
     setOpenAdd(false);
-
     console.log(formData);
   };
 
 
   const handleEditClose = async (formData, event) => {
-    try {
-      await updateContact(formData);
-      toast.success('Contact was updated in your phonebook');
-    } catch (error) {
-      console.log('Oops.. Please, try again');
-    }
+    // try {
+    //   await updateContact(formData);
+    //   toast.success('Contact was updated in your phonebook');
+    // } catch (error) {
+    //   console.log('Oops.. Please, try again');
+    // }
     setOpenEdit(false);
     console.log(formData);
   };
@@ -304,7 +305,7 @@ export default function EnhancedTable({rows}) {
                     <TableCell align="left">{row.number}</TableCell>
                     <TableCell align="left">
                         <Tooltip title="Edit contact">
-                          <IconButton onClick={(event) => handleEditClick(event, row.id, row.name, row.number)}>
+                          <IconButton onClick={() => handleEditClick(row.id, row.name, row.number)}>
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
@@ -334,7 +335,7 @@ export default function EnhancedTable({rows}) {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           />
-          {/* {openEdit && <Dialog onClose={handleEditClose} credentials={credentials} type='edit' />} */}
+          {openEdit && <Dialog onClose={handleEditClose} credentials={credentials} type='edit' />}
       </Paper>
     </Box>
     </>

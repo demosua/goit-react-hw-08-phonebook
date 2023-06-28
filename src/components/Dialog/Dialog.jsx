@@ -11,6 +11,10 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import { useCreateContactMutation, useUpdateContactMutation } from 'redux/backend/api';
+import { toast } from 'react-toastify';
+
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -56,18 +60,8 @@ export default function CustomizedDialog({ onClose, credentials, type }) {
   const [openDialog, setOpenDialog] = React.useState(true);
   const [contactName, setContactName] = React.useState(name);
   const [contactNumber, setContactNumber] = React.useState(number);
-  let title;
-
-      switch (type) {
-      case 'edit':
-          title = "Edit contact";
-        break;
-      case 'add':
-          title = "Add contact";
-        break;
-      default:
-        return;
-    }
+  const [createContact] = useCreateContactMutation();
+  const [updateContact] = useUpdateContactMutation();
 
   const handleChange = event => {
     const { name } = event.currentTarget;
@@ -83,21 +77,30 @@ export default function CustomizedDialog({ onClose, credentials, type }) {
     }
   }; 
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
-    let formData;
     switch (type) {
       case 'edit':
-          formData = {id, name: contactName, number: contactNumber}
+              try {
+                await updateContact({id, name: contactName, number: contactNumber});
+                toast.success('Contact was updated in your phonebook');
+              } catch (error) {
+                console.log('Oops.. Please, try again');
+              }
         break;
       case 'add':
-          formData = {name: contactName, number: contactNumber}
+              try {
+                await createContact({name: contactName, number: contactNumber});
+                console.log('Contact was created in your phonebook');
+              } catch (error) {
+                console.log('Oops.. Please, try again');
+              }
         break;
       default:
         return;
     }
     
-    onClose(formData);
+    //onClose(formData)
     setOpenDialog(false);
   }
 
@@ -115,7 +118,7 @@ export default function CustomizedDialog({ onClose, credentials, type }) {
         open={openDialog}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          {title}
+          {type = 'add' ? 'Add contact' : 'Edit contact'}
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <ThemeProvider theme={defaultTheme}>
