@@ -91,7 +91,7 @@ export default function CustomizedDialog({ onClose, credentials, type }) {
           setFormData({id, name: contactName, number: contactNumber})
         break;
       case 'add':
-        setFormData({name: contactName, number: contactNumber})
+          setFormData({name: contactName, number: contactNumber})
         break;
       default:
         return;

@@ -179,6 +179,11 @@ export default function EnhancedTable({rows}) {
     setOpenAdd(true);
   };
 
+  // const handleOpenEdit = () => {
+  //   setOpenEdit(true);
+  // };
+
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -195,10 +200,10 @@ export default function EnhancedTable({rows}) {
   };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   const handleEditClick = (contactId, contactName, contactNumber) => {
-    // setCredentials({id: contactId, name: contactName, number: contactNumber})
     setCredentials({id: contactId, name: contactName, number: contactNumber})
     console.log(credentials)
   }
+
   const handleDeleteClick = async (event, contactId) => {
     try {
       await deleteContact(contactId);
@@ -222,7 +227,7 @@ export default function EnhancedTable({rows}) {
   };
 
 
-  const handleEditClose = async (formData, event) => {
+  const handleEditClose = async (formData) => {
     try {
       await updateContact(formData);
       toast.success('Contact was updated in your phonebook');
@@ -300,6 +305,7 @@ export default function EnhancedTable({rows}) {
                     <TableCell align="left">
                         <Tooltip title="Edit contact">
                           <IconButton onClick={() => handleEditClick(row.id, row.name, row.number)}>
+                          {/* () => handleEditClick(row.id, row.name, row.number) */}
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
@@ -329,7 +335,7 @@ export default function EnhancedTable({rows}) {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           />
-          {/* {openEdit && <Dialog onClose={handleEditClose} credentials={credentials} type='edit' />} */}
+          {openEdit && <Dialog onClose={handleEditClose} credentials={credentials} type='edit' />}
       </Paper>
     </Box>
     </>
