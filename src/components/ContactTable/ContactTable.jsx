@@ -217,24 +217,25 @@ export default function EnhancedTable({rows}) {
   }
 
   const handleAddClose = async formData => {
-    // try {
-    //   await createContact(formData);
-    //   console.log('Contact was created in your phonebook');
-    // } catch (error) {
-    //   console.log('Oops.. Please, try again');
-    // }
+    try {
+      await createContact(formData);
+      console.log('Contact was created in your phonebook');
+    } catch (error) {
+      console.log('Oops.. Please, try again');
+    }
     setOpenAdd(false);
+
     console.log(formData);
   };
 
 
   const handleEditClose = async (formData, event) => {
-    // try {
-    //   await updateContact(formData);
-    //   toast.success('Contact was updated in your phonebook');
-    // } catch (error) {
-    //   console.log('Oops.. Please, try again');
-    // }
+    try {
+      await updateContact(formData);
+      toast.success('Contact was updated in your phonebook');
+    } catch (error) {
+      console.log('Oops.. Please, try again');
+    }
     setOpenEdit(false);
     console.log(formData);
   };
