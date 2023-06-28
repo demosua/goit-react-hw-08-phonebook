@@ -56,8 +56,9 @@ export default function CustomizedDialog({ onClose, credentials, type }) {
   const [openDialog, setOpenDialog] = React.useState(true);
   const [contactName, setContactName] = React.useState(name);
   const [contactNumber, setContactNumber] = React.useState(number);
-  let title;
+  const [formData, setFormData] = React.useState({id: '', name: '', number: ''})
 
+  let title;
       switch (type) {
       case 'edit':
           title = "Edit contact";
@@ -85,13 +86,12 @@ export default function CustomizedDialog({ onClose, credentials, type }) {
 
   const handleSubmit = event => {
     event.preventDefault();
-    let formData;
     switch (type) {
       case 'edit':
-          formData = {id, name: contactName, number: contactNumber}
+          setFormData({id, name: contactName, number: contactNumber})
         break;
       case 'add':
-          formData = {name: contactName, number: contactNumber}
+        setFormData({name: contactName, number: contactNumber})
         break;
       default:
         return;

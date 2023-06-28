@@ -169,11 +169,12 @@ export default function EnhancedTable({rows}) {
   const [deleteContact] = useDeleteContactMutation();
   const [updateContact] = useUpdateContactMutation();
   const [createContact] = useCreateContactMutation();
-  const [credentials, setCredentials] = React.useState({id: '', name: '', number: ''})
-  
+
   const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
-  
+  const [credentials, setCredentials] = React.useState({id: '', name: '', number: ''})
+
+
   const handleOpenAdd = () => {
     setOpenAdd(true);
   };
@@ -192,16 +193,10 @@ export default function EnhancedTable({rows}) {
     }
     setSelected([]);
   };
-
-  const handleEditClick = (event, contactId, contactName, contactNumber) => {
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const handleEditClick = (contactId, contactName, contactNumber) => {
     // setCredentials({id: contactId, name: contactName, number: contactNumber})
     setCredentials({id: contactId, name: contactName, number: contactNumber})
-
-    // const handleChange = useCallback(({ target: { name, checked } }) => {
-    //   setCheckbox(prevState => {
-    //     return new Map(prevState).set(name, checked);
-    //   });
-    // }, []);
     console.log(credentials)
   }
   const handleDeleteClick = async (event, contactId) => {
@@ -304,7 +299,7 @@ export default function EnhancedTable({rows}) {
                     <TableCell align="left">{row.number}</TableCell>
                     <TableCell align="left">
                         <Tooltip title="Edit contact">
-                          <IconButton onClick={(event) => handleEditClick(event, row.id, row.name, row.number)}>
+                          <IconButton onClick={() => handleEditClick(row.id, row.name, row.number)}>
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
