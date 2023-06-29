@@ -65,7 +65,7 @@ export const api = createApi({
       query: ({ contactId, name, number }) => ({
         url: `/contacts/${contactId}`,
         method: 'PATCH',
-        body: { name, number },
+        body: { contactId, name, number },
       }),
       invalidatesTags: ['Contacts'],
     }),

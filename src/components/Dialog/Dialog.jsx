@@ -54,7 +54,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialog({ onClose, credentials, type }) {
+export default function CustomizedDialog({ credentials, type, title }) {
 
   const { id, name, number } = credentials;
   const [openDialog, setOpenDialog] = React.useState(true);
@@ -63,7 +63,7 @@ export default function CustomizedDialog({ onClose, credentials, type }) {
   const [createContact] = useCreateContactMutation();
   const [updateContact] = useUpdateContactMutation();
 
-
+  
   const handleChange = event => {
     const { name } = event.currentTarget;
     switch (name) {
@@ -78,12 +78,14 @@ export default function CustomizedDialog({ onClose, credentials, type }) {
     }
   }; 
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log(type)
+    console.log({id: id, name: contactName, number: contactNumber})
     switch (type) {
       case 'edit':
               try {
-                await updateContact({id, name: contactName, number: contactNumber});
+                await updateContact({id: id, name: contactName, number: contactNumber});
                 toast.success('Contact was updated in your phonebook');
               } catch (error) {
                 console.log('Oops.. Please, try again');
@@ -98,10 +100,9 @@ export default function CustomizedDialog({ onClose, credentials, type }) {
               }
         break;
       default:
-        return;
+      return;
     }
-    
-    //onClose(formData)
+
     setOpenDialog(false);
   }
 
@@ -119,7 +120,7 @@ export default function CustomizedDialog({ onClose, credentials, type }) {
         open={openDialog}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          {type = 'add' ? 'Add contact' : 'Edit contact'}
+          {title}
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <ThemeProvider theme={defaultTheme}>
@@ -145,7 +146,7 @@ export default function CustomizedDialog({ onClose, credentials, type }) {
                     name="number"
                     value = {contactNumber}
                     onChange={handleChange}
-                    label="Rhone number"
+                    label="Phone number"
                     type="text"
                     id="number"
                     autoComplete="current-contact"

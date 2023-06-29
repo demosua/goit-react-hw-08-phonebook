@@ -22,7 +22,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Dialog from '../Dialog'
 import { visuallyHidden } from '@mui/utils';
 import { useCreateContactMutation, useDeleteContactMutation, useUpdateContactMutation } from 'redux/backend/api';
-import { toast } from 'react-toastify';
+import { Troubleshoot } from '@mui/icons-material';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -167,14 +167,10 @@ export default function EnhancedTable({rows}) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [deleteContact] = useDeleteContactMutation();
-  const [updateContact] = useUpdateContactMutation();
-  const [createContact] = useCreateContactMutation();
   const [credentials, setCredentials] = React.useState({id: '', name: '', number: ''})
   
   const [openAdd, setOpenAdd] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
-  
-
 
   const handleOpenAdd = () => {
     setOpenAdd(true);
@@ -196,15 +192,8 @@ export default function EnhancedTable({rows}) {
   };
 
   const handleEditClick = (contactId, contactName, contactNumber) => {
-    // setCredentials({id: contactId, name: contactName, number: contactNumber})
     setCredentials({id: contactId, name: contactName, number: contactNumber})
-
-    // const handleChange = useCallback(({ target: { name, checked } }) => {
-    //   setCheckbox(prevState => {
-    //     return new Map(prevState).set(name, checked);
-    //   });
-    // }, []);
-    console.log(credentials)
+    setOpenEdit(Troubleshoot)
   }
   const handleDeleteClick = async (event, contactId) => {
     try {
@@ -215,30 +204,6 @@ export default function EnhancedTable({rows}) {
       console.log('Oops.. Please, try again');
     }
   }
-
-  const handleAddClose = async formData => {
-    try {
-      await createContact(formData);
-      console.log('Contact was created in your phonebook');
-    } catch (error) {
-      console.log('Oops.. Please, try again');
-    }
-    setOpenAdd(false);
-
-    console.log(formData);
-  };
-
-
-  const handleEditClose = async (formData, event) => {
-    try {
-      await updateContact(formData);
-      toast.success('Contact was updated in your phonebook');
-    } catch (error) {
-      console.log('Oops.. Please, try again');
-    }
-    setOpenEdit(false);
-    console.log(formData);
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -268,7 +233,7 @@ export default function EnhancedTable({rows}) {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} handleOpenModal={handleOpenAdd} />
 
-        {openAdd && <Dialog onClose={handleAddClose} credentials={credentials} type='add' />}
+        {openAdd && <Dialog credentials={credentials} type='add' title ='Add contact' />}
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -336,7 +301,7 @@ export default function EnhancedTable({rows}) {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           />
-          {openEdit && <Dialog onClose={handleEditClose} credentials={credentials} type='edit' />}
+          {openEdit && <Dialog credentials={credentials} type='edit' title ='Update contact' />}
       </Paper>
     </Box>
     </>
