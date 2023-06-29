@@ -21,8 +21,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Dialog from '../Dialog'
 import { visuallyHidden } from '@mui/utils';
-import { useCreateContactMutation, useDeleteContactMutation, useUpdateContactMutation } from 'redux/backend/api';
-import { Troubleshoot } from '@mui/icons-material';
+import { useDeleteContactMutation } from 'redux/backend/api';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -175,6 +174,14 @@ export default function EnhancedTable({rows}) {
   const handleOpenAdd = () => {
     setOpenAdd(true);
   };
+  const handleCloseAdd = () => {
+    setOpenAdd(false);
+  }
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  }
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -192,8 +199,9 @@ export default function EnhancedTable({rows}) {
   };
 
   const handleEditClick = (contactId, contactName, contactNumber) => {
+        console.log(contactId)
     setCredentials({id: contactId, name: contactName, number: contactNumber})
-    setOpenEdit(Troubleshoot)
+    setOpenEdit(true)
   }
   const handleDeleteClick = async (event, contactId) => {
     try {
@@ -233,7 +241,7 @@ export default function EnhancedTable({rows}) {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} handleOpenModal={handleOpenAdd} />
 
-        {openAdd && <Dialog credentials={credentials} type='add' title ='Add contact' />}
+        {openAdd && <Dialog onClose={handleCloseAdd} credentials={credentials} type='add' title ='Add contact' />}
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -301,7 +309,7 @@ export default function EnhancedTable({rows}) {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           />
-          {openEdit && <Dialog credentials={credentials} type='edit' title ='Update contact' />}
+          {openEdit && <Dialog onClose={handleCloseEdit} credentials={credentials} type='edit' title ='Update contact' />}
       </Paper>
     </Box>
     </>

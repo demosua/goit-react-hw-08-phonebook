@@ -54,16 +54,20 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialog({ credentials, type, title }) {
+export default function CustomizedDialog({ onClose, credentials, type, title }) {
 
   const { id, name, number } = credentials;
   const [openDialog, setOpenDialog] = React.useState(true);
   const [contactName, setContactName] = React.useState(name);
   const [contactNumber, setContactNumber] = React.useState(number);
+
   const [createContact] = useCreateContactMutation();
   const [updateContact] = useUpdateContactMutation();
 
-  
+  React.useEffect(() => {
+
+  }, [id])
+
   const handleChange = event => {
     const { name } = event.currentTarget;
     switch (name) {
@@ -78,6 +82,9 @@ export default function CustomizedDialog({ credentials, type, title }) {
     }
   }; 
 
+
+
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(type)
@@ -107,6 +114,7 @@ export default function CustomizedDialog({ credentials, type, title }) {
   }
 
   const handleClose = () => {
+    onClose()
     setOpenDialog(false);
   };
 
